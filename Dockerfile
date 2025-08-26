@@ -1,17 +1,21 @@
-# Use a lightweight Python base image
-FROM python:3.11-slim
+# استفاده از Python 3.13 slim برای کانتینر سبک
+FROM python:3.13-slim
 
-# Install Tesseract OCR and Persian language support
-RUN apt-get update && apt-get install -y tesseract-ocr tesseract-ocr-fas
+# نصب tesseract و زبان فارسی
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    tesseract-ocr-fas \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set working directory in the container
+# ایجاد دایرکتوری کاری
 WORKDIR /app
 
-# Copy all project files to the container
+# کپی کردن فایل‌ها به کانتینر
 COPY . .
 
-# Install Python dependencies
+# نصب کتابخانه‌های پایتون
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Command to run the bot
+# فرمان اجرای ربات
 CMD ["python", "bot.py"]

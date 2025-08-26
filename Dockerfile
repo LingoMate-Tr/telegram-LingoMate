@@ -1,3 +1,5 @@
+RUN pip uninstall -y python-telegram-bot \
+    && pip install --no-cache-dir -r requirements.txt
 # استفاده از Python 3.13 slim برای کانتینر سبک
 FROM python:3.13-slim
 
@@ -19,3 +21,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # فرمان اجرای ربات
 CMD ["python", "bot.py"]
+

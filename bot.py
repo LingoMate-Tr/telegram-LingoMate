@@ -4,7 +4,8 @@ from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters
 )
 from config import TOKEN, LOG_FORMAT, LOG_LEVEL
-from bot_handlers import start, button, translate_text, translate_image, translate_audio
+from bot_handlers import start, button, translate_text, translate_image, translate_audio, translate_document
+from database import initialize_database
 
 logging.basicConfig(
     format=LOG_FORMAT,
@@ -17,6 +18,8 @@ def main():
         logger.error("TOKEN environment variable not set!")
         return
 
+    initialize_database()
+
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -24,6 +27,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, translate_text))
     app.add_handler(MessageHandler(filters.PHOTO, translate_image))
     app.add_handler(MessageHandler(filters.AUDIO, translate_audio))
+    app.add_handler(MessageHandler(filters.Document.PDF, translate_document))
 
     logger.info("Bot is running...")
     app.run_polling()

@@ -4,3 +4,4 @@ pytesseract
 deep-translator
 openai-whisper
 pydub
+PyMuPDF
